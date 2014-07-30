@@ -7,7 +7,7 @@ RESULT_LIST = 'resultList'
 
 def get_bus_lines(query):
     """Get an array of bus lines containing at least 1 bus line.
-
+4
     :param query: the search string
     :type query: number of the busline
     :returns: array of BusLine objects

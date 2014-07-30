@@ -43,6 +43,13 @@
                     <td>{{ line.busRouteId }}</td>
                     <td>{{ line.stStationNm }}</td>
                     <td>{{ line.edStationNm }}</td>
+                    <td>
+                        <form action="/busgokr/add_to_db/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="bus_line" value="{{ line }}">
+                            <input type="submit" value="Add to db">
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

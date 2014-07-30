@@ -25,8 +25,8 @@ class BusRoute(models.Model):
     first_station = models.ForeignKey('BusStation', related_name='first_station')
     last_station = models.ForeignKey('BusStation', related_name='last_station')
     interval = models.IntegerField()
-    first_low_time = models.DateTimeField()
-    last_low_time = models.DateTimeField()
+    first_low_time = models.DateTimeField(null=True)
+    last_low_time = models.DateTimeField(null=True)
     corporation = models.CharField(max_length=30)
 
     def __str__(self):
