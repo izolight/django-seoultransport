@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Bus lines</title>
+        <style type="text/css">
+        td {
+            text-align: center;
+        }
+        html * {
+            font-family: Arial, sans-serif;
+        }
+        </style>
+    </head>
+
+    <body>
+        <table>
+            <caption>Bus lines</caption>
+            <thead>
+                <tr>
+                    <th>type</th>
+                    <th>name</th>
+                    <th>id</th>
+                    <th>start</th>
+                    <th>stop</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for line in lines %}
+                <tr>
+                    {% if line.routeType == "1" %}
+                    <td><img src="http://m.bus.go.kr/mBus/images/bus/redbus.png" alt="Airport Bus"></td>
+                    {% elif line.routeType == "3" %}
+                    <td><img src="http://m.bus.go.kr/mBus/images/bus/bluebus.png" alt="Trunk Bus"></td>
+                    {% elif line.routeType == "4" %}
+                    <td><img src="http://m.bus.go.kr/mBus/images/bus/greenbus.png" alt="Branch Bus"></td>
+                    {% elif line.routeType == "7" %}
+                    <td><img src="http://m.bus.go.kr/mBus/images/bus/ibus.png" alt="Incheon Bus"></td>
+                    {% elif line.routeType == "8" %}
+                    <td><img src="http://m.bus.go.kr/mBus/images/bus/gbus.png" alt="Gyeongi Bus"></td>
+                    {% endif %}
+                    <td>{{ line.busRouteNm }}</td>
+                    <td>{{ line.busRouteId }}</td>
+                    <td>{{ line.stStationNm }}</td>
+                    <td>{{ line.edStationNm }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    	
+    </body>
+
+</html>
