@@ -4,6 +4,7 @@ BASE_URL = 'http://m.bus.go.kr/mBus/bus'
 PARAM_SEARCH_STRING = 'strSrch'
 RESULT_LIST = 'resultList'
 
+
 def get_bus_lines(query):
     """Get an array of bus lines containing at least 1 bus line.
 
@@ -13,6 +14,6 @@ def get_bus_lines(query):
     :rtype: BusLine object
     """
     url = BASE_URL + "/getBusRouteList.bms"
-    params = {PARAM_SEARCH_STRING : query}
+    params = {PARAM_SEARCH_STRING: query}
     r = requests.get(url, params=params).json()
     return r[RESULT_LIST]
