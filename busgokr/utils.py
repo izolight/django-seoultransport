@@ -23,6 +23,10 @@ def search_live(search):
     params = {PARAM_SEARCH_STRING: search}
     return requests.get(url, params=params).json()
 
+def get_stations_by_line(line_id):
+    url = BASE_URL + "/getStaionByRoute.bms"
+    params = {BUS_LINE_ID: line_id}
+    return requests.get(url, params=params).json()
 
 def add_line_to_db(line):
     first_station, x = BusStation.objects.get_or_create(name=line[FIRST_STATION])
