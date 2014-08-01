@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class RouteType(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=20)
@@ -9,11 +9,13 @@ class RouteType(models.Model):
     def __str__(self):
         return self.name
 
+
 class BusStation(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
+
 
 class BusRoute(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -31,6 +33,7 @@ class BusRoute(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class SearchedLive(models.Model):
     busroute = models.CharField(max_length=10)
