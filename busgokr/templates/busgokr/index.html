@@ -7,10 +7,10 @@
 
     <body>
     	<p>Search bus lines</p>
-    	<form action="/busgokr/line_search/" method="post" accept-charset="utf-8">
+    	<form action="/busgokr/lines/" method="post" accept-charset="utf-8">
     		{% csrf_token %}
     		<label for="line_search">Line: </label>
-    		<input id="line_search" type="number" name="line" placeholder="101">
+    		<input id="line_search" type="number" name="search" placeholder="101">
     		<input type="submit" value="Search">
     	</form>
     </body>

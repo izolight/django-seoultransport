@@ -31,3 +31,6 @@ class BusRoute(models.Model):
 
     def __str__(self):
         return self.name
+
+class SearchedLive(models.Model):
+    busroute = models.CharField(max_length=10)

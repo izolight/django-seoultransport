@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="/busgokr/lines/" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+    <label for="line_search">Line: </label>
+    <input id="line_search" type="number" name="search" placeholder="101">
+    <input type="submit" value="Search">
+</form>
+{% if search %}
+    <p>You searched for {{ search }}</p>
+    {% if searched_before == 0 %}
+        <p>You have never searched this before</p>
+        <form action="/busgokr/lines/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="live" value="{{ search }}">
+            <input type="submit" value="Lookup live">
+        </form>
+    {% endif %}
+{% endif %}
+<table>
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Length</th>
+        <th>Start</th>
+        <th>Stop</th>
+        <th>Interval</th>
+        <th>Corporation</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for line in lines %}
+        <tr>
+            <td>{{ line.route_type }}</td>
+            <td><a href="{{ line.id }}">{{ line.name }}</a></td>
+            <td>{{ line.length }}</td>
+            <td>{{ line.first_station }}</td>
+            <td>{{ line.last_station }}</td>
+            <td>{{ line.interval }}</td>
+            <td>{{ line.corporation }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
