@@ -49,6 +49,9 @@ class BusRoute(models.Model):
 class SearchedLive(models.Model):
     busroute = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.busroute
+
 
 class Section(models.Model):
     id = models.IntegerField(primary_key=True)

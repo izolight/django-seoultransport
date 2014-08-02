@@ -23,22 +23,15 @@ def search_lines(request):
     if request.method == 'POST':
         if 'search' in request.POST:
             search = request.POST['search']
+            searched_before = SearchedLive.objects.filter(busroute=search)
+            if not searched_before:
+                live_lines = search_live(search)
+                if RESULT_LIST in live_lines:
+                    live_lines = live_lines[RESULT_LIST]
+                    for line in live_lines:
+                        add_line_to_db(line)
+                SearchedLive(busroute=search).save()
             lines = BusRoute.objects.filter(name__contains=search).order_by('route_type', 'name')
-            searched_before = len(SearchedLive.objects.filter(busroute=search))
-            context = RequestContext(request, {
-                'lines': lines,
-                'search': search,
-                'searched_before': searched_before,
-            })
-        elif 'live' in request.POST:
-            search = request.POST['live']
-            live_lines = search_live(search)
-            if RESULT_LIST in live_lines:
-                live_lines = live_lines[RESULT_LIST]
-                for line in live_lines:
-                    add_line_to_db(line)
-            lines = BusRoute.objects.filter(name__contains=search)
-            SearchedLive(busroute=search).save()
             context = RequestContext(request, {
                 'lines': lines,
                 'search': search,

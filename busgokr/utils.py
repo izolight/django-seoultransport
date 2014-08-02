@@ -1,6 +1,6 @@
 from datetime import datetime
 import requests
-from busgokr.models import BusStation, RouteType, BusRoute
+from busgokr.models import BusStation, RouteType, BusRoute, Corporation
 
 BASE_URL = 'http://m.bus.go.kr/mBus/bus'
 PARAM_SEARCH_STRING = 'strSrch'
@@ -49,7 +49,8 @@ def add_line_to_db(line):
         last_low = datetime.strptime(line[LAST_LOW_TIME], '%Y%m%d%H%M%S')
     else:
         last_low = None
-    corporation = line[CORPORATION]
+
+    corporation, x = Corporation.objects.get_or_create(name=line[CORPORATION])
 
     try:
         BusRoute.objects.get(id=id)
