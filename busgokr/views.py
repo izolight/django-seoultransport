@@ -23,7 +23,7 @@ def search_lines(request):
     if request.method == 'POST':
         if 'search' in request.POST:
             search = request.POST['search']
-            lines = BusRoute.objects.filter(name__contains=search)
+            lines = BusRoute.objects.filter(name__contains=search).order_by('route_type', 'name')
             searched_before = len(SearchedLive.objects.filter(busroute=search))
             context = RequestContext(request, {
                 'lines': lines,

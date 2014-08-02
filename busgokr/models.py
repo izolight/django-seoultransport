@@ -11,6 +11,17 @@ class RouteType(models.Model):
 
 
 class BusStation(models.Model):
+    station = models.IntegerField(unique=True, null=True)
+    arsid = models.IntegerField(unique=True, null=True)
+    name = models.CharField(max_length=30)
+    latitude = models.DecimalField(max_digits=17, decimal_places=15, null=True)
+    longitude = models.DecimalField(max_digits=17, decimal_places=15, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Corporation(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
@@ -29,7 +40,7 @@ class BusRoute(models.Model):
     interval = models.IntegerField()
     first_low_time = models.DateTimeField(null=True)
     last_low_time = models.DateTimeField(null=True)
-    corporation = models.CharField(max_length=30)
+    corporation = models.ForeignKey('Corporation')
 
     def __str__(self):
         return self.name
@@ -37,3 +48,21 @@ class BusRoute(models.Model):
 
 class SearchedLive(models.Model):
     busroute = models.CharField(max_length=10)
+
+
+class Section(models.Model):
+    id = models.IntegerField(primary_key=True)
+    station = models.ForeignKey('BusStation', to_field='station')
+    distance = models.DecimalField(max_digits=8, decimal_places=3)
+    speed = models.IntegerField()
+
+
+class Sequence(models.Model):
+    number = models.IntegerField()
+    section = models.ForeignKey('Section')
+    turnstation = models.ForeignKey('BusStation', to_field='station')
+    is_turnstation = models.BooleanField(default=False)
+    route = models.ForeignKey('BusRoute')
+    direction = models.CharField(max_length=30)
+    first_time = models.DateTimeField()
+    last_time = models.DateTimeField()
