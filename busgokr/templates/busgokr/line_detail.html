@@ -14,15 +14,15 @@
                 </tr>
             </thead>
             <tbody>
-                {% for station in stations %}
+                {% for segment in segments %}
                 <tr>
-                    <td>{{ station.seq }}</td>
-                    <td>{{ station.beginTm }}</td>
-                    <td>{{ station.lastTm }}</td>
-                    <td>{{ station.stationNm }}</td>
-                    <td>{{ station.arsId }}</td>
-                    <td>{{ station.fullSectDist }}</td>
-                    <td>{{ station.direction }}</td>
+                    <td>{{ segment.number }}</td>
+                    <td>{{ segment.first_time }}</td>
+                    <td>{{ segment.last_time }}</td>
+                    <td>{{ segment.station }}</td>
+                    <td>{{ segment.station.arsid }}</td>
+                    <td>{{ segment.section.distance }}</td>
+                    <td>{{ segment.direction }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

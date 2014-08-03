@@ -1,0 +1,29 @@
+{% extends 'busgokr/lines_all.html' %}
+{% block search %}
+    <input id="search" type="text" name="search" placeholder="Enter station name" class="form-control">
+{% endblock %}
+{% block table %}
+    <table class="table table-striped table-hover">
+        <caption>Bus Stations</caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>ArsId</th>
+            <th>Id</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for station in stations %}
+            <tr>
+                <td>{{ station.name }}</td>
+                <td>{{ station.latitude }}</td>
+                <td>{{ station.longitude }}</td>
+                <td>{{ station.arsid }}</td>
+                <td>{{ station.station }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

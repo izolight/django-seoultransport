@@ -1,48 +1,45 @@
 {% extends 'busgokr/base.html' %}
 {% block body %}
 
-    {% block search %}
-    <form action='' method="post" accept-charset="utf-8" role="form" class="form-inline">
+    <form action='/busgokr/lines/' method="post" accept-charset="utf-8" role="form" class="form-inline">
         {% csrf_token %}
         <div class="form-group">
-            <label class="sr-only" for="line_search">Line: </label>
-            <input id="line_search" type="number" name="search" placeholder="Enter line number" class="form-control">
+            {% block search %}
+            <input id="search" type="text" name="search" placeholder="Enter line" class="form-control">
+            {% endblock %}
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
-    {% endblock %}
 
     {% if search %}
         <p class="text-success">You searched for {{ search }}</p>
     {% endif %}
 
-    {% block table %}
     <table class="table table-striped table-hover">
         <caption>Bus Lines</caption>
         <thead>
-        <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Length</th>
-            <th>Start</th>
-            <th>Stop</th>
-            <th>Interval</th>
-            <th>Corporation</th>
-        </tr>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Length</th>
+                <th>Start</th>
+                <th>Stop</th>
+                <th>Interval</th>
+                <th>Corporation</th>
+            </tr>
         </thead>
         <tbody>
         {% for line in lines %}
             <tr>
                 <td>{{ line.route_type }}</td>
-                <td><a href="{{ line.id }}">{{ line.name }}</a></td>
+                <td><a href="/busgokr/line/{{ line.id }}">{{ line.name }}</a></td>
                 <td>{{ line.length }}</td>
-                <td>{{ line.first_station }}</td>
-                <td>{{ line.last_station }}</td>
+                <td><a href="../stations/{{ line.first_station }}">{{ line.first_station }}</a></td>
+                <td><a href="../stations/{{ line.last_station }}">{{ line.last_station }}</a></td>
                 <td>{{ line.interval }}</td>
                 <td>{{ line.corporation }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    {% endblock %}
 {% endblock %}
