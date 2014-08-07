@@ -1,6 +1,7 @@
 {% extends 'busgokr/base.html' %}
 {% block body %}
-
+    <a href="../update_lines/">Update lines</a>
+    <a href="../update_segments/">Update Segments</a>
     <form action='/busgokr/lines/' method="post" accept-charset="utf-8" role="form" class="form-inline">
         {% csrf_token %}
         <div class="form-group">
@@ -34,8 +35,8 @@
                 <td>{{ line.route_type }}</td>
                 <td><a href="/busgokr/line/{{ line.id }}">{{ line.name }}</a></td>
                 <td>{{ line.length }}</td>
-                <td><a href="../stations/{{ line.first_station }}">{{ line.first_station }}</a></td>
-                <td><a href="../stations/{{ line.last_station }}">{{ line.last_station }}</a></td>
+                <td><a href="/busgokr/station/{{ line.first_station.id }}">{{ line.first_station }}</a></td>
+                <td><a href="/busgokr//station/{{ line.last_station.id }}">{{ line.last_station }}</a></td>
                 <td>{{ line.interval }}</td>
                 <td>{{ line.corporation }}</td>
             </tr>

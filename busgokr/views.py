@@ -1,7 +1,7 @@
 import logging
 
 from django.http import HttpResponse, HttpResponseRedirect
-
+from django.shortcuts import redirect
 from django.template import RequestContext, loader
 
 from busgokr.models import BusRoute, SearchedLive, BusStation, Sequence
@@ -14,8 +14,21 @@ RESULT_LIST = 'resultList'
 BUS_LIST = 'busList'
 
 
+def update_segments(request):
+    busroutes = BusRoute.objects.all()
+    for route in busroutes:
+        try:
+            SearchedLive.objects.get(busroute=route)
+        except SearchedLive.DoesNotExist:
+            segments = get_stations_by_line(route.id)
+            segments = segments[RESULT_LIST]
+            for segment in segments:
+                add_segment_to_db(segment)
+            SearchedLive(busroute=route).save()
+    return redirect('/busgokr/lines/')
+
 def update_lines(request):
-    search = request.POST['search']
+    search = ''
     live_lines = search_bus_live(search)
     if RESULT_LIST in live_lines:
         live_lines = live_lines[RESULT_LIST]
@@ -43,6 +56,7 @@ def all_lines(request):
 
     return HttpResponse(template.render(context))
 
+
 def search_lines(request, query):
     search = query
     lines = BusRoute.objects.filter(name__contains=search).order_by('route_type', 'name')
@@ -53,6 +67,7 @@ def search_lines(request, query):
     template = loader.get_template('busgokr/lines_all.html')
 
     return HttpResponse(template.render(context))
+
 
 def search_stations(request):
     if request.method == 'POST' and 'search' in request.POST:
@@ -74,36 +89,37 @@ def search_stations(request):
 
 
 def line_detail(request, line_id):
+    referer = 'http://127.0.0.1:8000/busgokr/line/'
+    if 'HTTP_REFERER' in request.META:
+        referer = request.META['HTTP_REFERER']
     busroute = BusRoute.objects.get(id=line_id)
     try:
         SearchedLive.objects.get(busroute=busroute)
     except SearchedLive.DoesNotExist:
         segments = get_stations_by_line(line_id)
-        segments = segments[RESULT_LIST]
-        for segment in segments:
-            add_segment_to_db(segment)
+        logger.error(len(segments))
+        if RESULT_LIST in segments != "None":
+            segments = segments[RESULT_LIST]
+            for segment in segments:
+                add_segment_to_db(segment)
         SearchedLive(busroute=busroute).save()
 
     segments = Sequence.objects.filter(route=busroute).order_by('number')
 
-
     template = loader.get_template('busgokr/line_detail.html')
     context = RequestContext(request, {
         'segments': segments,
+        'referer': referer,
     })
     return HttpResponse(template.render(context))
 
 
-def station_detail(request, station_name):
-    if request.method == 'POST' and 'search' in request.POST:
-        search = request.POST['search']
-        stations = search_stations_live(search)
-    else:
-        stations = search_stations_live(station_name)
-    stations = stations[BUS_LIST]
-
+def station_detail(request, station_id):
+    referer = request.META['HTTP_REFERER']
+    station = BusStation.objects.get(id=station_id)
     template = loader.get_template('busgokr/station_detail.html')
     context = RequestContext(request, {
-        'stations': stations,
+        'station': station,
+        'referer': referer,
     })
     return HttpResponse(template.render(context))

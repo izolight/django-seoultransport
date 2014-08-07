@@ -96,15 +96,15 @@ def add_section_to_db(section):
 
 def add_sequence_to_db(sequence, section, station):
     sequence_number = sequence[SEQUENCE_NUMBER]
-    turnstation, x  = BusStation.objects.get_or_create(id=sequence[TURNSTATION_ID])
+    turnstation, x = BusStation.objects.get_or_create(id=sequence[TURNSTATION_ID])
     route = BusRoute.objects.get(id=sequence[BUS_LINE_ID])
-    direction = sequence[DIRECTION]
-    first_time =sequence[SEQUENCE_FIRST_TIME]
+    direction, x = Location.objects.get_or_create(name=sequence[DIRECTION])
+    first_time = sequence[SEQUENCE_FIRST_TIME]
     last_time = sequence[SEQUENCE_LAST_TIME]
 
-    if first_time == ':':
+    if first_time == ':' or first_time == '  :  ':
         first_time = None
-    if last_time == ':':
+    if last_time == ':'or last_time == '  :  ':
         last_time = None
 
     if sequence_number == '1':
@@ -121,8 +121,8 @@ def add_sequence_to_db(sequence, section, station):
         Sequence.objects.get(number=sequence_number, route=route)
     except Sequence.DoesNotExist:
         sequence = Sequence(number=sequence_number, section=section, turnstation=turnstation, station=station,
-                    is_turnstation=is_turnstation, route=route, direction=direction, first_time=first_time,
-                    last_time=last_time)
+                            is_turnstation=is_turnstation, route=route, direction=direction, first_time=first_time,
+                            last_time=last_time)
         sequence.save()
 
 

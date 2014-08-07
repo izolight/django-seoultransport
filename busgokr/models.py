@@ -16,6 +16,7 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+
 class BusStation(models.Model):
     id = models.IntegerField(primary_key=True)
     arsid = models.IntegerField(unique=True, null=True)
@@ -27,6 +28,7 @@ class BusStation(models.Model):
         if self.name:
             return str(self.name)
         return str(self.id)
+
 
 class Corporation(models.Model):
     name = models.CharField(max_length=30)
@@ -76,7 +78,7 @@ class Sequence(models.Model):
     station = models.ForeignKey('BusStation')
     is_turnstation = models.BooleanField(default=False)
     route = models.ForeignKey('BusRoute')
-    direction = models.CharField(max_length=30)
+    direction = models.ForeignKey(Location, null=True)
     first_time = models.TimeField(null=True)
     last_time = models.TimeField(null=True)
 

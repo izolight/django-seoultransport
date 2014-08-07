@@ -1,5 +1,6 @@
 {% extends 'busgokr/base.html' %}
 {% block body %}
+    <a href="{{ referer }}">Zurück</a>
         <table class="table table-striped table-hover">
         <caption>Line segments</caption>
             <thead>
@@ -19,7 +20,7 @@
                     <td>{{ segment.number }}</td>
                     <td>{{ segment.first_time }}</td>
                     <td>{{ segment.last_time }}</td>
-                    <td>{{ segment.station }}</td>
+                    <td><a href="/busgokr/station/{{ segment.station.id }}">{{ segment.station }}</a></td>
                     <td>{{ segment.station.arsid }}</td>
                     <td>{{ segment.section.distance }}</td>
                     <td>{{ segment.direction }}</td>
