@@ -9,8 +9,40 @@
 </head>
 <body>
 <div class="container">
+    <br/>
+    <a href="/busgokr/lines/" class="btn btn-default" role="button">Lines</a>
+    <a href="/busgokr/locations/" class="btn btn-default" role="button">Locations</a>
+    <a href="/busgokr/update_lines/" class="btn btn-default" role="button">Update lines</a>
+    <a href="/busgokr/update_segments/" class="btn btn-default" role="button">Update Segments</a>
+    <br/>
+    <br/>
+    {% block search %}
+        <form action='{% block search_link %}{% endblock %}' method="post" accept-charset="utf-8" role="form" class="form-inline">
+            {% csrf_token %}
+            <div class="form-group">
+                <input id="search" type="text" name="search" placeholder="{% block search_ph %}{% endblock %}" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        {% if search %}
+            <p class="text-success">You searched for {{ search }}</p>
+        {% endif %}
+    {% endblock %}
     {% block body %}
     {% endblock %}
+        <table class="table table-striped table-hover">
+            <caption>{% block table_caption %}{% endblock %}</caption>
+            <thead>
+                <tr>
+                    {% block table_head %}
+                    {% endblock %}
+                </tr>
+            </thead>
+            <tbody>
+                {% block table_body %}
+                {% endblock %}
+            </tbody>
+        </table>
 </div>
 <script src="http://code.jquery.com/jquery.min.js"></script>
 </body>

@@ -1,46 +1,26 @@
 {% extends 'busgokr/base.html' %}
-{% block body %}
-    <a href="../update_lines/">Update lines</a>
-    <a href="../update_segments/">Update Segments</a>
-    <form action='/busgokr/lines/' method="post" accept-charset="utf-8" role="form" class="form-inline">
-        {% csrf_token %}
-        <div class="form-group">
-            {% block search %}
-            <input id="search" type="text" name="search" placeholder="Enter line" class="form-control">
-            {% endblock %}
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-
-    {% if search %}
-        <p class="text-success">You searched for {{ search }}</p>
-    {% endif %}
-
-    <table class="table table-striped table-hover">
-        <caption>Bus Lines</caption>
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Name</th>
-                <th>Length</th>
-                <th>Start</th>
-                <th>Stop</th>
-                <th>Interval</th>
-                <th>Corporation</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for line in lines %}
-            <tr>
-                <td>{{ line.route_type }}</td>
-                <td><a href="/busgokr/line/{{ line.id }}">{{ line.name }}</a></td>
-                <td>{{ line.length }}</td>
-                <td><a href="/busgokr/station/{{ line.first_station.id }}">{{ line.first_station }}</a></td>
-                <td><a href="/busgokr/station/{{ line.last_station.id }}">{{ line.last_station }}</a></td>
-                <td>{{ line.interval }}</td>
-                <td>{{ line.corporation }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block search_link %}/busgokr/lines/{% endblock %}
+{% block search_ph %}Enter line{% endblock %}
+{% block table_caption %}Bus Lines{% endblock %}
+{% block table_head %}
+    <th>Type</th>
+    <th>Name</th>
+    <th>Length</th>
+    <th>Start</th>
+    <th>Stop</th>
+    <th>Interval</th>
+    <th>Corporation</th>
+{% endblock %}
+{% block table_body %}
+    {% for line in lines %}
+    <tr>
+        <td>{{ line.route_type }}</td>
+        <td><a href="/busgokr/line/{{ line.id }}">{{ line.name }}</a></td>
+        <td>{{ line.length }}</td>
+        <td><a href="/busgokr/station/{{ line.first_station.id }}">{{ line.first_station }}</a></td>
+        <td><a href="/busgokr/station/{{ line.last_station.id }}">{{ line.last_station }}</a></td>
+        <td>{{ line.interval }}</td>
+        <td><a href="/busgokr/corporation/{{ line.corporation.id }}">{{ line.corporation }}</a></td>
+    </tr>
+    {% endfor %}
 {% endblock %}

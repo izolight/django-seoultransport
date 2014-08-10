@@ -27,6 +27,7 @@ def update_segments(request):
             SearchedLive(busroute=route).save()
     return redirect('/busgokr/lines/')
 
+
 def update_lines(request):
     search = ''
     live_lines = search_bus_live(search)
@@ -69,30 +70,27 @@ def search_lines(request, query):
     return HttpResponse(template.render(context))
 
 
-def all_stations(request):
+def all_locations(request):
     if request.method == 'POST' and 'search' in request.POST:
         return HttpResponseRedirect(request.POST['search'] + '/')
-    stations = BusStation.objects.all()[:100]
+    locations = Location.objects.all()[:100]
     context = RequestContext(request, {
-        'stations': stations,
+        'locations': locations,
     })
 
-    template = loader.get_template('busgokr/stations_all.html')
+    template = loader.get_template('busgokr/locations.html')
 
     return HttpResponse(template.render(context))
 
-def search_stations(request, query):
+
+def search_locations(request, query):
     search = query
     locations = Location.objects.filter(name__icontains=search)
-    stations = []
-    for l in locations:
-        stations += BusStation.objects.filter(name=l)
-    logger.error(stations)
     context = RequestContext(request, {
-        'stations': stations,
+        'locations': locations,
         'search': search,
     })
-    template = loader.get_template('busgokr/stations_all.html')
+    template = loader.get_template('busgokr/locations.html')
 
     return HttpResponse(template.render(context))
 
@@ -137,6 +135,7 @@ def station_detail(request, station_id):
     })
     return HttpResponse(template.render(context))
 
+
 def directions(request, direction):
     search = direction
     location = Location.objects.get(name=search)
@@ -149,10 +148,11 @@ def directions(request, direction):
     context = RequestContext(request, {
         'lines': lines,
         'search': search,
-        })
+    })
     template = loader.get_template('busgokr/lines_all.html')
 
     return HttpResponse(template.render(context))
+
 
 def corporations(request, id):
     corporation = Corporation.objects.get(id=id)
@@ -162,5 +162,17 @@ def corporations(request, id):
     })
 
     template = loader.get_template('busgokr/lines_all.html')
+
+    return HttpResponse(template.render(context))
+
+
+def location_detail(request, id):
+    location = Location.objects.get(id=id)
+    stations = BusStation.objects.filter(name=location)
+    context = RequestContext(request, {
+        'stations': stations,
+        })
+
+    template = loader.get_template('busgokr/location_detail.html')
 
     return HttpResponse(template.render(context))

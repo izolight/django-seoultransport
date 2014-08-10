@@ -1,0 +1,19 @@
+{% extends 'busgokr/base.html' %}
+{% block search %}{% endblock %}
+{% block table_caption %}Stations{% endblock %}
+{% block table_head %}
+    <th>Name</th>
+    <th>Arsid</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+{% endblock %}
+{% block table_body %}
+    {% for station in stations %}
+        <tr>
+            <td><a href="/busgokr/station/{{ station.id }}">{{ station.name }}</a></td>
+            <td>{{ station.arsid }}</td>
+            <td>{{ station.latitude }}</td>
+            <td>{{ station.longitude }}</td>
+        </tr>
+    {% endfor %}
+{% endblock %}

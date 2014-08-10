@@ -1,0 +1,14 @@
+{% extends 'busgokr/base.html' %}
+{% block search_link %}/busgokr/locations/{% endblock %}
+{% block search_ph %}Enter location name{% endblock %}
+{% block table_caption %}Locations{% endblock %}
+{% block table_head %}
+    <th>Name</th>
+{% endblock %}
+{% block table_body %}
+    {% for location in locations %}
+        <tr>
+            <td><a href="/busgokr/location/{{ location.id }}">{{ location.name }}</a></td>
+        </tr>
+    {% endfor %}
+{% endblock %}
