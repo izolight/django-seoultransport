@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.template import RequestContext, loader
 
 from busgokr.models import *
-from busgokr.utils import search_bus_live, add_line_to_db, get_stations_by_line, search_stations_live, add_segment_to_db
+from busgokr.utils import search_bus_live, add_line_to_db, get_stations_by_line, add_segment_to_db
 
 
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ def update_lines(request):
         'lines': lines,
         'search': search,
     })
-    template = loader.get_template('busgokr/lines_all.html')
+    template = loader.get_template('busgokr/lines.html')
 
     return HttpResponse(template.render(context))
 
@@ -53,7 +53,7 @@ def all_lines(request):
         'lines': lines,
     })
 
-    template = loader.get_template('busgokr/lines_all.html')
+    template = loader.get_template('busgokr/lines.html')
 
     return HttpResponse(template.render(context))
 
@@ -65,7 +65,7 @@ def search_lines(request, query):
         'lines': lines,
         'search': search,
     })
-    template = loader.get_template('busgokr/lines_all.html')
+    template = loader.get_template('busgokr/lines.html')
 
     return HttpResponse(template.render(context))
 
@@ -96,9 +96,6 @@ def search_locations(request, query):
 
 
 def line_detail(request, line_id):
-    referer = '/busgokr/lines/'
-    if 'HTTP_REFERER' in request.META:
-        referer = request.META['HTTP_REFERER']
     busroute = BusRoute.objects.get(id=line_id)
     try:
         SearchedLive.objects.get(busroute=busroute)
@@ -112,26 +109,28 @@ def line_detail(request, line_id):
         SearchedLive(busroute=busroute).save()
 
     segments = Sequence.objects.filter(route=busroute).order_by('number')
+    distance = 0
+    iterseg = iter(segments)
+    next(iterseg)
+    for segment in iterseg:
+        distance += segment.section.distance
 
     template = loader.get_template('busgokr/line_detail.html')
     context = RequestContext(request, {
         'segments': segments,
-        'referer': referer,
+        'distance': distance,
+        'line': busroute,
     })
     return HttpResponse(template.render(context))
 
 
 def station_detail(request, station_id):
-    referer = '/busgokr/lines/'
-    if 'HTTP_REFERER' in request.META:
-        referer = request.META['HTTP_REFERER']
     station = BusStation.objects.get(id=station_id)
     sequences = Sequence.objects.filter(station=station)
     template = loader.get_template('busgokr/station_detail.html')
     context = RequestContext(request, {
         'station': station,
         'sequences': sequences,
-        'referer': referer,
     })
     return HttpResponse(template.render(context))
 
@@ -149,29 +148,29 @@ def directions(request, direction):
         'lines': lines,
         'search': search,
     })
-    template = loader.get_template('busgokr/lines_all.html')
+    template = loader.get_template('busgokr/lines.html')
 
     return HttpResponse(template.render(context))
 
 
-def corporations(request, id):
-    corporation = Corporation.objects.get(id=id)
+def corporations(request, corp_id):
+    corporation = Corporation.objects.get(id=corp_id)
     lines = BusRoute.objects.filter(corporation=corporation)
     context = RequestContext(request, {
         'lines': lines,
     })
 
-    template = loader.get_template('busgokr/lines_all.html')
+    template = loader.get_template('busgokr/lines.html')
 
     return HttpResponse(template.render(context))
 
 
-def location_detail(request, id):
-    location = Location.objects.get(id=id)
+def location_detail(request, loc_id):
+    location = Location.objects.get(id=loc_id)
     stations = BusStation.objects.filter(name=location)
     context = RequestContext(request, {
         'stations': stations,
-        })
+    })
 
     template = loader.get_template('busgokr/location_detail.html')
 

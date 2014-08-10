@@ -1,5 +1,50 @@
 {% extends 'busgokr/base.html' %}
+{% block head %}
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+        var map;
+        function initialize() {
+            var busStops = [
+                {% for s in stations %}
+                    ['{{ s.name }}', {{ s.latitude }}, {{ s.longitude }}],
+                {% endfor %}
+            ];
+
+            var myLatlng =  new google.maps.LatLng(busStops[0][1], busStops[0][2]);
+            var mapOptions = {
+                zoom: 16,
+                center: myLatlng
+            };
+
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+            setMarkers(map, busStops);
+        }
+
+        function setMarkers(map, locations) {
+            for (var i = 0; i < locations.length; i++) {
+                var stop = locations[i];
+                var myLatLng = new google.maps.LatLng(stop[1], stop[2]);
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: stop[0]
+                });
+            }
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    <style>
+        #map-canvas { height: 400px }
+    </style>
+{% endblock %}
 {% block search %}{% endblock %}
+{% block body %}
+<div id="map-canvas"></div>
+{% endblock %}
 {% block table_caption %}Stations{% endblock %}
 {% block table_head %}
     <th>Name</th>
