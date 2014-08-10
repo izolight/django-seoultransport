@@ -1,7 +1,7 @@
 {% extends 'busgokr/base.html' %}
 {% block body %}
     {% block search %}
-        <form action='/busgokr/lines/' method="post" accept-charset="utf-8" role="form" class="form-inline">
+        <form action='/busgokr/stations/' method="post" accept-charset="utf-8" role="form" class="form-inline">
             {% csrf_token %}
             <div class="form-group">
                     <input id="search" type="text" name="search" placeholder="Enter station name" class="form-control">

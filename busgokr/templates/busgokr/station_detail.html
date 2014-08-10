@@ -3,13 +3,31 @@
 <a href="{{ referer }}">Zurück</a>
 <div class="bs-docs-container">
     <div class="row show-grid">
-        <div class="col-md-6">{{ station.name }}</div>
+        <div class="col-md-2">{{ station.name }}</div>
         <div class="col-md-2">{{ station.arsid }}</div>
+        <div class="col-md-2">{{ station.latitude }}</div>
+        <div class="col-md-2">{{ station.longitude }}</div>
     </div>
-    <div class="row show-grid">
-        <div class="col-md-4">{{ station.latitude }}</div>
-        <div class="col-md-4">{{ station.longitude }}</div>
-    </div>
-
 </div>
+    <table class="table table-striped table-hover">
+        <caption>Bus Lines</caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Direction</th>
+            <th>First</th>
+            <th>Last</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for seq in sequences %}
+            <tr>
+                <td><a href="/busgokr/line/{{ seq.route.id }}/">{{ seq.route }}</a></td>
+                <td><a href="/busgokr/direction/{{ seq.direction }}/">{{ seq.direction }}</a></td>
+                <td>{{ seq.first_time }}</td>
+                <td>{{ seq.last_time }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

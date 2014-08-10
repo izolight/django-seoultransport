@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^station/(?P<station_id>\d+)/$', views.station_detail),
     url(r'^update_lines/$', views.update_lines),
     url(r'^update_segments/$', views.update_segments),
+    url(r'^direction/(.+)/$', views.directions),
 )

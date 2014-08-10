@@ -23,7 +23,7 @@
                     <td><a href="/busgokr/station/{{ segment.station.id }}">{{ segment.station }}</a></td>
                     <td>{{ segment.station.arsid }}</td>
                     <td>{{ segment.section.distance }}</td>
-                    <td>{{ segment.direction }}</td>
+                    <td><a href="/busgokr/direction/{{ segment.direction }}/">{{ segment.direction }}</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
