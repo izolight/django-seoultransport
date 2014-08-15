@@ -1,5 +1,5 @@
 .idea/
-
+__pycache__/
 busgokr/migrations/old
 db.sqlite3
 *.pyc
