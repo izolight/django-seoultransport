@@ -1,7 +1,7 @@
 import logging
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template import RequestContext, loader
 
 from busgokr.models import *
@@ -175,3 +175,7 @@ def location_detail(request, loc_id):
     template = loader.get_template('busgokr/location_detail.html')
 
     return HttpResponse(template.render(context))
+
+
+def index(request):
+    return render(request, 'busgokr/base.html')

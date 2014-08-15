@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url
 from busgokr import views
 
 urlpatterns = patterns('',
+    url(r'^$', views.index),
     url(r'^lines/$', views.all_lines),
     url(r'^lines/(.+)/$', views.search_lines),
     url(r'^locations/$', views.all_locations),
