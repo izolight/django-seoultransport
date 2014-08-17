@@ -2,9 +2,7 @@
 {% block head %}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script>
-        var map;
         function initialize() {
-            var bounds = new google.maps.LatLngBounds();
             var mapOptions = {
                 zoom: 12,
                 center: new google.maps.LatLng(37.56, 126.975)
@@ -27,7 +25,17 @@
                 strokeWeight: 2
             });
 
+            google.maps.Polyline.prototype.getBounds = function() {
+                var bounds = new google.maps.LatLngBounds();
+                this.getPath().forEach(function(e) {
+                    bounds.extend(e);
+                });
+                return bounds;
+            };
+
+            map.fitBounds(busPath.getBounds());
             busPath.setMap(map);
+
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);

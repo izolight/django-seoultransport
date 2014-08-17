@@ -4,18 +4,22 @@
     <script>
         function initialize() {
             var bounds = new google.maps.LatLngBounds();
+
+            var myLatlng =  new google.maps.LatLng(37.56, 126.975);
+            var mapOptions = {
+                zoom: 16,
+                center: myLatlng
+            };
+
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
             var busStops = [
                 {% for s in stations %}
                     ['{{ s.name }}', {{ s.latitude }}, {{ s.longitude }}],
                 {% endfor %}
             ];
-            var myLatlng =  new google.maps.LatLng(busStops[0][1], busStops[0][2]);
-            var mapOptions = {
-                zoom: 16,
-                center: myLatlng
-            };
-            var map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
+
             setMarkers(map, busStops, bounds);
         }
         function setMarkers(map, locations, bounds) {
