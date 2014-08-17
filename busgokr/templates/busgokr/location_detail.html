@@ -17,7 +17,8 @@
                 var marker{{forloop.counter}} = new google.maps.Marker({
                     position: myLatLng{{forloop.counter}},
                     map: map,
-                    title: '{{ s.name }}'
+                    title: '{{ s.name }}',
+                    icon: '/static/icons/busstop.png'
                 });
                 var contentString{{forloop.counter}} = '<a href="/busgokr/station/{{ s.id }}">{{ s.arsid }}</a>';
                 google.maps.event.addListener(marker{{forloop.counter}}, 'click', function() {
