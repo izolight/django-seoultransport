@@ -4,35 +4,29 @@
     <script>
         function initialize() {
             var bounds = new google.maps.LatLngBounds();
-
             var myLatlng =  new google.maps.LatLng(37.56, 126.975);
             var mapOptions = {
                 zoom: 16,
                 center: myLatlng
             };
-
             var map = new google.maps.Map(document.getElementById('map-canvas'),
                     mapOptions);
-
-            var busStops = [
-                {% for s in stations %}
-                    ['{{ s.name }}', {{ s.latitude }}, {{ s.longitude }}],
-                {% endfor %}
-            ];
-
-            setMarkers(map, busStops, bounds);
-        }
-        function setMarkers(map, locations, bounds) {
-            for (var i = 0; i < locations.length; i++) {
-                var stop = locations[i];
-                var myLatLng = new google.maps.LatLng(stop[1], stop[2]);
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
+            var infoWindow = new google.maps.InfoWindow;
+            {% for s in stations %}
+                var myLatLng{{forloop.counter}} = new google.maps.LatLng({{ s.latitude }}, {{ s.longitude }});
+                var marker{{forloop.counter}} = new google.maps.Marker({
+                    position: myLatLng{{forloop.counter}},
                     map: map,
-                    title: stop[0]
+                    title: '{{ s.name }}'
                 });
-                bounds.extend(marker.getPosition());
-            }
+                var contentString{{forloop.counter}} = '<a href="/busgokr/station/{{ s.id }}">{{ s.arsid }}</a>';
+                google.maps.event.addListener(marker{{forloop.counter}}, 'click', function() {
+                    infoWindow.setContent(contentString{{forloop.counter}});
+                    infoWindow.open(map, marker{{forloop.counter}});
+                });
+
+                bounds.extend(myLatLng{{forloop.counter}});
+            {% endfor %}
             map.fitBounds(bounds);
         }
         google.maps.event.addDomListener(window, 'load', initialize);
